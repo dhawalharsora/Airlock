@@ -17,9 +17,9 @@ chosen because refunds move (fake) money — which forces every safety mechanism
 
 > Synthetic business data, real system. Everything above the data layer runs for real.
 
-[![Watch the Airlock introduction](media/Airlock_Intro_M-thumbnail.jpg)](media/Airlock_Intro_M.mp4?raw=1)
+[![Watch the Airlock introduction](media/Airlock_Intro_M-thumbnail.jpg)](https://youtu.be/9coiIQ_nFPw)
 
-[▶ Watch the Airlock introduction](media/Airlock_Intro_M.mp4?raw=1)
+[▶ Watch the Airlock introduction](https://youtu.be/9coiIQ_nFPw)
 
 ## What makes an action "safe to ship" here
 
@@ -54,9 +54,9 @@ chosen because refunds move (fake) money — which forces every safety mechanism
 Watch the complete browser workflow: a customer request, the agent's decision, human
 approval, execution, and observability.
 
-[![Watch the Airlock agent demo](media/Airlock_Agent_Demo-thumbnail.jpg)](media/Airlock_Agent_Demo.mp4?raw=1)
+[![Watch the Airlock agent demo](media/Airlock_Agent_Demo-thumbnail.jpg)](https://youtu.be/CcPinGlX57Q)
 
-[▶ Watch the agent workflow](media/Airlock_Agent_Demo.mp4?raw=1)
+[▶ Watch the agent workflow](https://youtu.be/CcPinGlX57Q)
 
 ## Run it
 
@@ -82,9 +82,9 @@ plus provider setup and DB verification queries. The end-to-end demo (customer
 request → agent decision → human approval → execution → observability) runs entirely
 in the browser.
 
-[![Watch the Airlock console demo](media/Airlock_Console_Demo-thumbnail.jpg)](media/Airlock_Console_Demo.mp4?raw=1)
+[![Watch the Airlock console demo](media/Airlock_Console_Demo-thumbnail.jpg)](https://youtu.be/aTPSXdvSjZM)
 
-[▶ Watch Airlock start from the console](media/Airlock_Console_Demo.mp4?raw=1)
+[▶ Watch Airlock start from the console](https://youtu.be/aTPSXdvSjZM)
 
 ## Evaluate safety
 
@@ -96,6 +96,6 @@ cd evals
 uv run python runner.py
 ```
 
-[![Watch the Airlock evaluation demo](media/Airlock_Eval_Demo-thumbnail.jpg)](media/Airlock_Eval_Demo.mp4?raw=1)
+[![Watch the Airlock evaluation demo](media/Airlock_Eval_Demo-thumbnail.jpg)](https://youtu.be/5NkoULrJKUk)
 
-[▶ Watch the safety evaluation](media/Airlock_Eval_Demo.mp4?raw=1)
+[▶ Watch the safety evaluation](https://youtu.be/5NkoULrJKUk)
