@@ -1,0 +1,20 @@
+[project]
+name = "airlock-mcp"
+version = "0.1.0"
+description = "Airlock MCP tool server (FastMCP) — the governed tool boundary"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.3.0",
+    "psycopg[binary]>=3.2",
+    "python-dotenv>=1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/airlock_mcp"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]

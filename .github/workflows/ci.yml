@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 15 * * *"   # nightly full behavioural evals
+  workflow_dispatch:
+
+jobs:
+  # The merge gate: deterministic safety invariants. No model, no secrets, fast.
+  safety-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Policy + redaction tests (the release gate)
+        working-directory: mcp-server
+        run: |
+          uv sync
+          uv run pytest tests -q
+
+  # Behavioural evals against the live agent. Nightly / manual; needs Bedrock secrets.
+  live-evals:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: airlock
+          POSTGRES_PASSWORD: airlock
+          POSTGRES_DB: airlock
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U airlock -d airlock"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://airlock:airlock@localhost:5432/airlock
+      MCP_SERVER_URL: http://127.0.0.1:8081/mcp/
+      MODEL_PROVIDER: bedrock
+      AGENT_MODEL: global.anthropic.claude-haiku-4-5
+      JUDGE_MODEL: amazon.nova-lite
+      AWS_REGION: ap-southeast-2
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AIRLOCK_LIVE_EVALS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Install psql client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Seed database
+        run: |
+          psql "$DATABASE_URL" -f db/migrations/001_init.sql
+          psql "$DATABASE_URL" -f db/seed/100_seed.sql
+      - name: Start MCP server
+        working-directory: mcp-server
+        run: |
+          uv sync
+          uv run python -m airlock_mcp.server &
+          for i in $(seq 1 20); do curl -sf http://127.0.0.1:8081/mcp/ && break || sleep 1; done
+      - name: Run refusal evals (thresholded)
+        working-directory: evals
+        run: |
+          uv sync
+          uv run pytest -q

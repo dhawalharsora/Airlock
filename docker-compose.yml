@@ -1,0 +1,24 @@
+# Local Postgres. Schema and seed run on first boot.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: airlock
+      POSTGRES_PASSWORD: airlock
+      POSTGRES_DB: airlock
+    ports:
+      - "5432:5432"
+    volumes:
+      - airlock_pgdata:/var/lib/postgresql/data
+      # Postgres runs these once, in filename order, on first boot -> schema then seed.
+      - ./db/migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+      - ./db/migrations/002_idempotency.sql:/docker-entrypoint-initdb.d/002_idempotency.sql:ro
+      - ./db/seed/100_seed.sql:/docker-entrypoint-initdb.d/100_seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airlock -d airlock"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  airlock_pgdata:

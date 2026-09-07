@@ -1,0 +1,19 @@
+[project]
+name = "airlock-evals"
+version = "0.1.0"
+description = "Refusal-weighted evals run against the live Airlock agent"
+requires-python = ">=3.11"
+dependencies = [
+    "strands-agents>=1.0.0",
+    "mcp>=1.6.0",
+    "boto3>=1.35",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "psycopg[binary]>=3.2",
+]
+
+[project.optional-dependencies]
+ollama = ["strands-agents[ollama]>=1.0.0"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
